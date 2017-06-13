@@ -15,7 +15,7 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="155dp"
-        android:gravity="right"
+        android:gravity="center"
         android:src="@drawable/cupinhand" />
 
 </LinearLayout>

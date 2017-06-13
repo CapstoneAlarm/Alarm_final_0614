@@ -26,6 +26,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.os.Vibrator;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -56,6 +57,8 @@ public class AlarmAlertActivity extends Activity implements OnClickListener {
 	private TextView problemView;
 	private TextView answerView;
 	private String answerString;
+
+	private static PowerManager.WakeLock sCpuWakeLock;
 
 
 	String check_module = "default";
@@ -88,6 +91,10 @@ public class AlarmAlertActivity extends Activity implements OnClickListener {
 		this.setTitle(alarm.getAlarmName());
 
 
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+				| WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+				| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+				| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 
 
 
@@ -108,10 +115,13 @@ public class AlarmAlertActivity extends Activity implements OnClickListener {
 
 		switch (alarm.getHowto()) {
 			case IMAGE:
-				//imageProblem = new ImageProblem();
 
 				Intent intent1 = new Intent(this, ImageProblem.class);
 				startActivity(intent1);
+
+
+
+
 
 				/*
 				try {
@@ -175,7 +185,7 @@ public class AlarmAlertActivity extends Activity implements OnClickListener {
 			problemView.setText(mathProblem.toString());
 
 			answerView = (TextView) findViewById(R.id.textView2);
-			answerView.setText("= ?");
+			answerView.setText("?");
 
 			((Button) findViewById(R.id.Button0)).setOnClickListener(this);
 			((Button) findViewById(R.id.Button1)).setOnClickListener(this);

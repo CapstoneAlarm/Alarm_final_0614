@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.Image;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -43,7 +44,8 @@ import za.co.neilson.alarm.R;            //????????????????
 
 public class ImageProblem extends AppCompatActivity{
 
-
+    private MediaPlayer mediaPlayer;
+    private Alarm alarm;
 
     private static final int INPUT_SIZE = 299;
     private static final int IMAGE_MEAN = 128;
@@ -86,6 +88,8 @@ public class ImageProblem extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Bundle bundle = this.getIntent().getExtras();
+
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         IntentFilter filter_on = new IntentFilter(Intent.ACTION_SCREEN_ON);
@@ -111,69 +115,59 @@ public class ImageProblem extends AppCompatActivity{
 
 
 
-        /*
-
-        if(background.getHeight() < background.getWidth()){
-	background = imgRotate(background);
-}
-
-private Bitmap imgRotate(Bitmap bmp){
-		int width = bmp.getWidth();
-		int height = bmp.getHeight();
-
-		Matrix matrix = new Matrix();
-		matrix.postRotate(90);
-
-		Bitmap resizedBitmap = Bitmap.createBitmap(bmp, 0, 0, width, height, matrix, true);
-		bmp.recycle();
-
-		return resizedBitmap;
-}
-
-
-         */
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 
 
 
         cameraView.setCameraListener(new CameraListener() {
             @Override
             public void onPictureTaken(byte[] picture) {
-                super.onPictureTaken(picture);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(picture, 0, picture.length);
-                bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
+                try {
+                    super.onPictureTaken(picture);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(picture, 0, picture.length);
+                    bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
 
 
-                imageViewResult.setImageBitmap(bitmap);
+                    imageViewResult.setImageBitmap(bitmap);
 
-                //TensorFlowImageClassifier의 이미지분류 데이터를 넘겨주기
-                final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
-
-
-                //Classifier의 toString()호출로, 화면에 인식결과를 찍어내기
-                textViewResult.setText(results.toString());
+                    //TensorFlowImageClassifier의 이미지분류 데이터를 넘겨주기
+                    final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
 
 
-                //hj
-                //성공메시지 띄우는 메소드
-                verifyImage();
+                    //Classifier의 toString()호출로, 화면에 인식결과를 찍어내기
+                    textViewResult.setText(results.toString());
 
-                //hj
-                //verifyImage()결과, 실패 횟수에 따른 다른 작동
-                if(flagged==1){
-                    Toast.makeText(ImageProblem.this,"(1회 실패) 인식률이 낮습니다. ",Toast.LENGTH_SHORT).show();
 
-                } else if(flagged==2){
-                    Toast.makeText(ImageProblem.this,"(2회 실패) 인식률이 낮습니다. ",Toast.LENGTH_SHORT).show();
+                    //hj
+                    //성공메시지 띄우는 메소드
+                    verifyImage();
 
-                } else if(flagged==3){
-                    Toast.makeText(ImageProblem.this,"(3회 실패) 인식률이 낮습니다. ",Toast.LENGTH_SHORT).show();
+                    //hj
+                    //verifyImage()결과, 실패 횟수에 따른 다른 작동
 
-                    //이미지 인식 3번 실패하면 사칙연산 퀴즈로 넘기기
-                    vibe.cancel();
-                    Intent intent = new Intent(ImageProblem.this, AlarmAlertActivity2.class);
-                    startActivity(intent);
-                    finish();
+                    if (flagged == 1) {
+                        Toast.makeText(ImageProblem.this, "(1회 실패) 인식률이 낮습니다. ", Toast.LENGTH_SHORT).show();
+
+                    } else if (flagged == 2) {
+                        Toast.makeText(ImageProblem.this, "(2회 실패) 인식률이 낮습니다. ", Toast.LENGTH_SHORT).show();
+
+                    } else if (flagged == 3) {
+                        Toast.makeText(ImageProblem.this, "(3회 실패) 인식률이 낮습니다. ", Toast.LENGTH_SHORT).show();
+
+                        //이미지 인식 3번 실패하면 사칙연산 퀴즈로 넘기기
+                        vibe.cancel();
+
+
+                        Intent intent = new Intent(ImageProblem.this, AlarmAlertActivity2.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                }catch (Exception e){
+
                 }
 
             }
@@ -190,7 +184,12 @@ private Bitmap imgRotate(Bitmap bmp){
         btnDetectObject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cameraView.captureImage(); //이미지 캡쳐
+
+                try {
+                    cameraView.captureImage(); //이미지 캡쳐
+                }catch (Exception e){
+
+                }
             }
         });
 
@@ -204,11 +203,12 @@ private Bitmap imgRotate(Bitmap bmp){
         Random mRand = new Random();
         int nResult = mRand.nextInt(4); //0,1,2,3 중에 난수생성
 
+        //"컵"
 
         if(nResult==0){
             mission="칫솔";
         } else if(nResult==1){
-            mission="컵";
+            mission="변기";
         } else if(nResult==2){
             mission="변기";
         } else if(nResult==3){
@@ -499,12 +499,12 @@ private Bitmap imgRotate(Bitmap bmp){
 
 
 
-
         //hj 누수 막기
         try {
 
             unregisterReceiver(vibrateReceiver);
             unregisterReceiver(vibrateReceiver_on);
+            mediaPlayer.stop();
 
         } catch (Exception e) {
 

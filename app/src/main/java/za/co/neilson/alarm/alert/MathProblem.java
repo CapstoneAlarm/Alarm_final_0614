@@ -51,7 +51,7 @@ public class MathProblem {
 	private ArrayList<Operator> operators;
 	private int answer = 0;
 	private int min = 0;
-	private int max = 12;
+	private int max = 8;
 	public MathProblem() {
 		this(3);
 	}
@@ -84,6 +84,7 @@ public class MathProblem {
 		while(combinedParts.contains(Operator.DIVIDE) ||combinedParts.contains(Operator.MULTIPLY)
 				||combinedParts.contains(Operator.ADD) ||combinedParts.contains(Operator.SUBTRACT)){
 
+			int div_count=0;
 			int i = 0;
 			//Operator를 object형태로 combinedParts.get(i)에 넘겨주어 연산자를 식별할 수 있게함
 			while(!(combinedParts.get(i) instanceof Operator)){
@@ -92,6 +93,7 @@ public class MathProblem {
 
 			if(combinedParts.get(i) == Operator.DIVIDE){
 				answer = (Integer)combinedParts.get(i-1) / (Integer)combinedParts.get(i+1);
+
 			}else if(combinedParts.get(i) == Operator.MULTIPLY){
 				answer = (Integer)combinedParts.get(i-1) * (Integer)combinedParts.get(i+1);
 			}else if(combinedParts.get(i) == Operator.ADD){
@@ -111,6 +113,7 @@ public class MathProblem {
 	//문제 출력 ( a * b ) - c 이런 식으로
 	@Override
 	public String toString() {
+
 		StringBuilder problemBuilder = new StringBuilder();
 
 		problemBuilder.append("( ");
