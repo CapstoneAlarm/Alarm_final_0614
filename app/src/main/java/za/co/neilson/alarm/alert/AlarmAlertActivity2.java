@@ -41,7 +41,7 @@ public class AlarmAlertActivity2 extends Activity implements View.OnClickListene
 
 
     //private Alarm alarm;
-    private MediaPlayer mediaPlayer;
+    //private MediaPlayer mediaPlayer;
 
     private StringBuilder answerBuilder = new StringBuilder();
 
@@ -138,7 +138,7 @@ public class AlarmAlertActivity2 extends Activity implements View.OnClickListene
                         Log.d(getClass().getSimpleName(), "Incoming call: "
                                 + incomingNumber);
                         try {
-                            mediaPlayer.pause();
+                            AlarmAlertActivity.mediaPlayer.pause();
                         } catch (IllegalStateException e) {
 
                         }
@@ -146,7 +146,7 @@ public class AlarmAlertActivity2 extends Activity implements View.OnClickListene
                     case TelephonyManager.CALL_STATE_IDLE:
                         Log.d(getClass().getSimpleName(), "Call State Idle");
                         try {
-                            mediaPlayer.start();
+                            AlarmAlertActivity.mediaPlayer.start();
                         } catch (IllegalStateException e) {
 
                         }
@@ -174,22 +174,22 @@ public class AlarmAlertActivity2 extends Activity implements View.OnClickListene
     private void startAlarm() {
 
         //if (alarm.getAlarmTonePath() != "") {
-            mediaPlayer = new MediaPlayer();
-            //if (alarm.getVibrate()) {
+            //mediaPlayer = new MediaPlayer();
+            if (Alarm.vibrate) {
                 vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                 long[] pattern = { 1000, 200, 200, 200 };
                 vibrator.vibrate(pattern, 0);
-            //}
+            }
             try {
-                mediaPlayer.setVolume(1.0f, 1.0f);
+                //mediaPlayer.setVolume(1.0f, 1.0f);
                 //mediaPlayer.setDataSource(this,Uri.parse(alarm.getAlarmTonePath()));
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-                mediaPlayer.setLooping(true);
-                mediaPlayer.prepare();
-                mediaPlayer.start();
+                //mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                //mediaPlayer.setLooping(true);
+                //mediaPlayer.prepare();
+                //mediaPlayer.start();
 
             } catch (Exception e) {
-                mediaPlayer.release();
+                AlarmAlertActivity.mediaPlayer.release();
                 alarmActive = false;
             }
         //}
@@ -294,12 +294,12 @@ public class AlarmAlertActivity2 extends Activity implements View.OnClickListene
 
         }
         try {
-            mediaPlayer.stop();
+            AlarmAlertActivity.mediaPlayer.stop();
         } catch (Exception e) {
 
         }
         try {
-            mediaPlayer.release();
+            AlarmAlertActivity.mediaPlayer.release();
         } catch (Exception e) {
 
         }
@@ -366,12 +366,12 @@ public class AlarmAlertActivity2 extends Activity implements View.OnClickListene
                         finishAndRemoveTask();
                     }
                     try {
-                        mediaPlayer.stop();
+                        AlarmAlertActivity.mediaPlayer.stop();
                     } catch (IllegalStateException ise) {
 
                     }
                     try {
-                        mediaPlayer.release();
+                        AlarmAlertActivity.mediaPlayer.release();
                     } catch (Exception e) {
 
                     }

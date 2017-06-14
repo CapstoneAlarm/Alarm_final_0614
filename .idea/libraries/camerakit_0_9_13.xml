@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="camerakit-0.9.13">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/42bdf52373e27dfefa006d1c9053aa818bffd625/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/42bdf52373e27dfefa006d1c9053aa818bffd625/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/96f19d8ea2f29382e6efc9d2d7302bbe31a361bb/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/96f19d8ea2f29382e6efc9d2d7302bbe31a361bb/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

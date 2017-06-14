@@ -43,7 +43,7 @@ import android.widget.Toast;
 public class AlarmAlertActivity extends Activity implements OnClickListener {
 
 	private Alarm alarm;
-	private MediaPlayer mediaPlayer;
+	public static MediaPlayer mediaPlayer;
 
 	private StringBuilder answerBuilder = new StringBuilder();
 

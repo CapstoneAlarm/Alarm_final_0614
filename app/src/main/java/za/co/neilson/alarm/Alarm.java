@@ -83,7 +83,7 @@ public class Alarm implements Serializable {
 	private Calendar alarmTime = Calendar.getInstance();
 	private Day[] days = {Day.MONDAY,Day.TUESDAY,Day.WEDNESDAY,Day.THURSDAY,Day.FRIDAY,Day.SATURDAY,Day.SUNDAY};
 	private String alarmTonePath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString();
-	private Boolean vibrate = true;
+	public static Boolean vibrate = true;
 	private String alarmName = "알람이름을 입력하세요";
 
 
